@@ -193,7 +193,7 @@ public class Launcher extends Application {
         initStage.setHeight(SPLASH_HEIGHT);
         initStage.setWidth(SPLASH_WIDTH);
         initStage.initStyle(StageStyle.TRANSPARENT);
-        initStage.setAlwaysOnTop(true);
+        initStage.setAlwaysOnTop(false);
         initStage.show();
     }
 

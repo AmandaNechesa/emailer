@@ -33,7 +33,7 @@ public class PanelController implements Initializable {
     public TextField subject;
     public TextArea message;
     String path = "";
-    private File file;
+    private File file, fileread;
     private int length;
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,6 +45,9 @@ public class PanelController implements Initializable {
     }
 
     private void buttonListeners() {
+        //completed functionality
+        WordDoc wordDoc = new WordDoc();
+
         clearSession.setOnAction(event -> {
             Settings.userDetails.clear();
             Settings.mailDetails.clear();
@@ -55,7 +58,10 @@ public class PanelController implements Initializable {
             }
 
         });
+//        *************************************************************************************************************************//
+
         addEmailFile.setOnAction(event -> {
+            Settings.mailDetails.put("subject", subject.getText());
             FileChooser fileChooser = getWordFiles();
             fileChooser.setTitle("SELECT WORD DOCUMENT WITH TABLE FOR USER NAME AND EMAIL ADDRESSES");
             //Show open file dialog
@@ -68,6 +74,12 @@ public class PanelController implements Initializable {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            try {
+                wordDoc.setContacts(file);
+                wordDoc.openFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
         readHtml.setOnAction(event -> {
             //open html
@@ -78,14 +90,11 @@ public class PanelController implements Initializable {
             //Show open file dialog
             File chosenHtml = fileChooser.showOpenDialog(panel.getScene().getWindow());
             path = chosenHtml.getAbsolutePath();
-            WordDoc wordDoc = new WordDoc();
-            try {
-                Settings.mailDetails.put("html", path);
-                Settings.mailDetails.put("type", "text/html");
-                wordDoc.openFile(file, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            System.out.println(path);
+            Settings.mailDetails.put("html", path);
+            Settings.mailDetails.put("type", "text/html");
+            wordDoc.setPassed(new File(path));
+//                wordDoc.openFile();
         });
         readtextfile.setOnAction(event -> {
             //read text file
@@ -98,12 +107,9 @@ public class PanelController implements Initializable {
             path = chosenTxt.getAbsolutePath();
             Settings.mailDetails.put("txt", path);
             Settings.mailDetails.put("type", "text/plain");
-            WordDoc wordDoc = new WordDoc();
-            try {
-                wordDoc.openFile(file, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            wordDoc.setPassed(new File(path));
+
+//                wordDoc.openFile();
         });
         readWordDocument.setOnAction(event -> {
             //read word document
@@ -114,12 +120,9 @@ public class PanelController implements Initializable {
             path = chosenWord.getAbsolutePath();
             Settings.mailDetails.put("word", path);
             Settings.mailDetails.put("type", "text");
-            WordDoc wordDoc = new WordDoc();
-            try {
-                wordDoc.openFile(file, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            wordDoc.setPassed(new File(path));
+
+//                wordDoc.openFile();
         });
         attachFileToMail.setOnAction(event -> {
             //attach file
@@ -132,12 +135,10 @@ public class PanelController implements Initializable {
             fileChooser.setTitle("ATTACH FILE TO EMAIL");
             f = fileChooser.showOpenDialog(panel.getScene().getWindow());
 
-            WordDoc wordDoc = new WordDoc();
-            try {
-                wordDoc.openFile(file, f);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            wordDoc.setContacts(new File(path));
+            wordDoc.setAttachment(f);
+
+//                wordDoc.openFile();
         });
     }
 

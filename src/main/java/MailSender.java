@@ -2,10 +2,7 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -39,30 +36,13 @@ public class MailSender {
 
     }
 
-    public void initializeMail(String to, String password, String from, String subject, String type, File attachment) {
-        String pathname = "";
-        if (attachment.exists()) {
-//            MailSender mailer = new MailSender();
-//            StringBuilder msg = null;
-//            String pathname = "src/URBAN LANDLORDS.htm";
-//            File file = new File(pathname);
-//            try {
-//                FileInputStream fileInputStream = new FileInputStream(file);
-//                int i = 0;
-//                while (true) {
-//                    try {
-//
-//                        if (!((i = fileInputStream.read()) != -1)) break;
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    System.out.print((char) i);
-//                    msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
-//                }
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//            mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type);
+    public void initializeMail(String to, String password, String from, String subject, String type, File attachment, File passed) {
+
+        String pathname = null;
+        if (attachment != null) {
+
+
+            System.out.println("there is a file attachment");
             if (!Settings.mailDetails.get("txt").isEmpty()) {
                 type = Settings.mailDetails.get("type");
                 pathname = Settings.mailDetails.get("txt");
@@ -90,7 +70,7 @@ public class MailSender {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        System.out.print((char) i);
+//                        System.out.print((char) i);
                         msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
                     }
                 } catch (FileNotFoundException e) {
@@ -114,14 +94,15 @@ public class MailSender {
             }
 
         } else {
-            if (!Settings.mailDetails.get("txt").isEmpty()) {
+            System.out.println("no attachment");
+            if (Settings.mailDetails.containsKey("txt")) {
                 type = Settings.mailDetails.get("type");
                 pathname = Settings.mailDetails.get("txt");
 
-            } else if (!Settings.mailDetails.get("word").isEmpty()) {
+            } else if (Settings.mailDetails.containsKey("word")) {
                 type = Settings.mailDetails.get("type");
                 pathname = Settings.mailDetails.get("word");
-            } else if (!Settings.mailDetails.get("html").isEmpty()) {
+            } else {
                 type = Settings.mailDetails.get("type");
                 pathname = Settings.mailDetails.get("html");
             }
@@ -141,7 +122,7 @@ public class MailSender {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.print((char) i);
+//                    System.out.print((char) i);
                     msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
                 }
             } catch (FileNotFoundException e) {
@@ -165,17 +146,20 @@ public class MailSender {
                     }
                 });
         MimeMessage message = new MimeMessage(session);
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        try {
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        } catch (AddressException ignored) {
+
+        }
         message.setSubject(sub);
-        message.setText(msg);
-        if (attachment.exists()) {
+        if (attachment != null) {
             //send with attachment
             BodyPart messageBodyPart = new MimeBodyPart();
 
             // Now set the actual message
-            messageBodyPart.setText("This is message body");
+            messageBodyPart.setText(msg);
 
-            // Create a multipar message
+            // Create a multipart message
             Multipart multipart = new MimeMultipart();
 
             // Set text message part
@@ -183,7 +167,7 @@ public class MailSender {
 
             // Part two is attachment
             messageBodyPart = new MimeBodyPart();
-            String filename = "/home/manisha/file.txt";
+            String filename = attachment.getAbsolutePath();
             DataSource source = new FileDataSource(filename);
             messageBodyPart.setDataHandler(new DataHandler(source));
             messageBodyPart.setFileName(filename);
