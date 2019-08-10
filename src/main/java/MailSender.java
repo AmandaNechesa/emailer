@@ -10,16 +10,29 @@ import java.util.Properties;
 public class MailSender {
     private Properties props = new Properties();
 
+    public MailSender(String provider) {
+
+        if (Settings.userDetails.get("provider").equalsIgnoreCase("gmail")) {
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class",
+                    "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "587");
+        }
+    }
     public MailSender() {
+
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class",
                 "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "587");
+
     }
 
-    private static void initializeMail() {
+    public void initializeMail(String to, String password, String from, String subject, String type) {
         MailSender mailer = new MailSender();
         StringBuilder msg = null;
         String pathname = "src/URBAN LANDLORDS.htm";
@@ -40,11 +53,6 @@ public class MailSender {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        String type = "text/html";
-        String subject = "Hello";
-        String to = "mwendemich@gmail.com";
-        String password = "Kapsabet010";
-        String from = "muemasnyamai@gmail.com";
         mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type);
 
     }

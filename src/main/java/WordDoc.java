@@ -8,15 +8,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class wordDocument {
+public class WordDoc {
     static String temp = "";
     static String cellValue;
 
-    public static void openFile() throws IOException {
+    public void openFile(File filepassed) throws IOException {
 
 
-        File file = new File(Settings.pathname.get("file"));
-        FileInputStream fis = new FileInputStream(file);
+        FileInputStream fis = new FileInputStream(filepassed);
         XWPFDocument doc = new XWPFDocument(fis);
         List<XWPFTable> tables = doc.getTables();
 
@@ -24,15 +23,23 @@ public class wordDocument {
             int counter = 0;
             for (XWPFTableRow row : table.getRows()) {
                 if (counter != 0) {
+                    int i = 0;
                     for (XWPFTableCell cell : row.getTableCells()) {
-                        System.out.println(cell.getText());
-                        String sFieldValue = cell.getText();
-                        System.out.println(sFieldValue);
-                        System.out.println("\t\t");
+                        if (i == 1) {
+                            String sFieldValue = cell.getText();
+                            System.out.println(sFieldValue);
+                            MailSender mailSender = new MailSender();
+                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), "testing", "text/html");
+
+
+                        }
+                        i++;
                     }
+
+//                    System.out.println("row "+row.getTableCells().get(0));
                 }
                 counter++;
-                System.out.println(" ");
+//                System.out.println(" ");
             }
         }
 

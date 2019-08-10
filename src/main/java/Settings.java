@@ -6,5 +6,6 @@ public interface Settings {
     String appName = "Mwendes Mail Manager";
     HashMap<String, String> pathname = new HashMap<>();
     HashMap<String, String> userDetails = new HashMap<>();
+    HashMap<String, String> mailDetails = new HashMap<>();
 
 }
