@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class WordDoc {
+public class WordDoc extends Super {
     static String temp = "";
     static String cellValue;
     private File contacts, attachment, passed;
@@ -54,38 +54,42 @@ public class WordDoc {
         FileInputStream fis = new FileInputStream(getContacts());
         XWPFDocument doc = new XWPFDocument(fis);
         List<XWPFTable> tables = doc.getTables();
+        if (tables.isEmpty()) {
+            System.out.println("no tables present");
 
-        for (XWPFTable table : tables) {
-            int counter = 0;
-            for (XWPFTableRow row : table.getRows()) {
-                if (counter != 0) {
-                    int i = 0;
-                    for (XWPFTableCell cell : row.getTableCells()) {
-                        if (i == 1 && !getContacts().isFile()) {
-                            String sFieldValue = cell.getText();
-                            System.out.println(sFieldValue);
-                            MailSender mailSender = new MailSender();
-                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), null, getPassed());
+        } else {
+            for (XWPFTable table : tables) {
+                int counter = 0;
+                for (XWPFTableRow row : table.getRows()) {
+
+                    if (counter != 0) {
+                        int i = 0;
+                        for (XWPFTableCell cell : row.getTableCells()) {
+                            if (i == 1 && !getContacts().isFile()) {
+                                String sFieldValue = cell.getText();
+                                System.out.println(sFieldValue);
+                                MailSender mailSender = new MailSender();
+                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), null, getPassed());
 
 
-                        } else if (i == 1 && getContacts().exists()) {
-                            String sFieldValue = cell.getText();
-                            System.out.println(sFieldValue);
-                            MailSender mailSender = new MailSender();
-                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), getAttachment(), getPassed());
+                            } else if (i == 1 && getContacts().exists()) {
+                                String sFieldValue = cell.getText();
+                                System.out.println(sFieldValue);
+                                MailSender mailSender = new MailSender();
+                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), getAttachment(), getPassed());
 //attach file to email
 
+                            }
+                            i++;
                         }
-                        i++;
-                    }
 
 //                    System.out.println("row "+row.getTableCells().get(0));
-                }
-                counter++;
+                    }
+                    counter++;
 //                System.out.println(" ");
+                }
             }
         }
-
     }
 
 }

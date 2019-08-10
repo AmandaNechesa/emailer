@@ -183,8 +183,7 @@ public class MailSender {
             try {
 
                 //send message
-                message.setContent(
-                        msg,
+                message.setContent(msg,
                         type);
 
                 Transport.send(message);
