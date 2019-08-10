@@ -11,7 +11,7 @@ public class MailSender {
     private Properties props = new Properties();
 
     public MailSender(String provider) {
-
+//for multiple providers
         if (Settings.userDetails.get("provider").equalsIgnoreCase("gmail")) {
             props.put("mail.smtp.host", "smtp.gmail.com");
             props.put("mail.smtp.socketFactory.port", "465");
@@ -32,29 +32,54 @@ public class MailSender {
 
     }
 
-    public void initializeMail(String to, String password, String from, String subject, String type) {
-        MailSender mailer = new MailSender();
-        StringBuilder msg = null;
-        String pathname = "src/URBAN LANDLORDS.htm";
-        File file = new File(pathname);
-        try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            int i = 0;
-            while (true) {
-                try {
+    public void initializeMail(String to, String password, String from, String subject, String type, File attachment) {
+        if (attachment.exists()) {
+//            MailSender mailer = new MailSender();
+//            StringBuilder msg = null;
+//            String pathname = "src/URBAN LANDLORDS.htm";
+//            File file = new File(pathname);
+//            try {
+//                FileInputStream fileInputStream = new FileInputStream(file);
+//                int i = 0;
+//                while (true) {
+//                    try {
+//
+//                        if (!((i = fileInputStream.read()) != -1)) break;
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    System.out.print((char) i);
+//                    msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
+//                }
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//            mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type);
 
-                    if (!((i = fileInputStream.read()) != -1)) break;
-                } catch (IOException e) {
-                    e.printStackTrace();
+        } else {
+            MailSender mailer = new MailSender();
+            StringBuilder msg = null;
+            String pathname = "src/URBAN LANDLORDS.htm";
+            File file = new File(pathname);
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                int i = 0;
+                while (true) {
+                    try {
+
+                        if (!((i = fileInputStream.read()) != -1)) break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.print((char) i);
+                    msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
                 }
-                System.out.print((char) i);
-                msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type);
+            mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type);
 
+        }
     }
 
     private void send(final String from, final String password, String to, String sub, String msg, String type) {

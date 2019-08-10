@@ -7,5 +7,6 @@ public interface Settings {
     HashMap<String, String> pathname = new HashMap<>();
     HashMap<String, String> userDetails = new HashMap<>();
     HashMap<String, String> mailDetails = new HashMap<>();
+    HashMap<String, String> fileReaders = new HashMap<>();
 
 }

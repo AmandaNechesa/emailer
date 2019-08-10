@@ -6,65 +6,68 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="panel" prefHeight="700.0" prefWidth="1200.0"
             xmlns="http://javafx.com/javafx/11.0.1" fx:controller="PanelController">
     <children>
-       <Label fx:id="LabelName" alignment="CENTER" layoutX="457.0" layoutY="24.0" prefHeight="61.0" prefWidth="475.0"
-              text="LabelName">
+        <Label fx:id="LabelName" alignment="CENTER" layoutX="457.0" layoutY="24.0" prefHeight="61.0" prefWidth="475.0"
+               text="LabelName">
             <font>
-               <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
             </font>
         </Label>
         <Label alignment="CENTER" layoutX="114.0" layoutY="24.0" prefHeight="61.0" prefWidth="243.0" text="NAME">
             <font>
-               <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
             </font>
         </Label>
         <Label alignment="CENTER" layoutX="114.0" layoutY="111.0" prefHeight="61.0" prefWidth="243.0" text="EMAIL">
             <font>
-               <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
             </font>
         </Label>
         <Label alignment="CENTER" layoutX="114.0" layoutY="208.0" prefHeight="61.0" prefWidth="243.0" text="PROVIDER">
             <font>
-               <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
             </font>
         </Label>
-       <Label fx:id="LabelEmail" alignment="CENTER" layoutX="457.0" layoutY="111.0" prefHeight="61.0" prefWidth="475.0"
-              text="LabelEmail">
+        <Label fx:id="LabelEmail" alignment="CENTER" layoutX="457.0" layoutY="111.0" prefHeight="61.0" prefWidth="475.0"
+               text="LabelEmail">
             <font>
-               <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
             </font>
         </Label>
-       <Label fx:id="LabelProvider" alignment="CENTER" layoutX="457.0" layoutY="208.0" prefHeight="61.0"
-              prefWidth="475.0" text="LabelProvider">
+        <Label fx:id="LabelProvider" alignment="CENTER" layoutX="457.0" layoutY="208.0" prefHeight="61.0"
+               prefWidth="475.0" text="LabelProvider">
             <font>
-               <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
             </font>
         </Label>
-       <Button fx:id="clearSession" layoutX="949.0" layoutY="24.0" mnemonicParsing="false" prefHeight="73.0"
-               prefWidth="237.0" style="-fx-background-color: ORANGE;" text="CLEAR SESSION">
+        <Button fx:id="clearSession" layoutX="949.0" layoutY="24.0" mnemonicParsing="false" prefHeight="73.0"
+                prefWidth="237.0" style="-fx-background-color: ORANGE;" text="CLEAR SESSION">
             <font>
-               <Font size="26.0"/>
+                <Font size="26.0"/>
             </font>
         </Button>
-       <Button fx:id="addEmailFile" layoutX="317.0" layoutY="575.0" mnemonicParsing="false" prefHeight="61.0"
-               prefWidth="306.0" text="SELECT ADDRESS SOURCE FILE"/>
-        <TextArea layoutX="181.0" layoutY="385.0" prefHeight="100.0" prefWidth="553.0" promptText="MESSAGE.......">
+        <Button fx:id="addEmailFile" layoutX="317.0" layoutY="575.0" mnemonicParsing="false" prefHeight="61.0"
+                prefWidth="306.0" text="SELECT ADDRESS SOURCE FILE"/>
+        <TextArea layoutX="181.0" layoutY="385.0" prefHeight="100.0" prefWidth="553.0" fx:id="message"
+                  promptText="MESSAGE.......">
             <font>
-               <Font size="18.0"/>
+                <Font size="18.0"/>
             </font>
         </TextArea>
-       <TextField alignment="CENTER" layoutX="179.0" layoutY="319.0" prefHeight="45.0" prefWidth="553.0"
-                  promptText="SUBJECT">
+        <TextField alignment="CENTER" layoutX="179.0" layoutY="319.0" fx:id="subject" prefHeight="45.0"
+                   prefWidth="553.0" promptText="SUBJECT">
             <font>
-               <Font size="20.0"/>
+                <Font size="20.0"/>
             </font>
         </TextField>
-       <Button layoutX="12.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="151.0"
-               text="SEND WEBPAGE"/>
-       <Button layoutX="210.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="198.0"
-               text="READ FROM WORD DOCUMENT"/>
-       <Button layoutX="440.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="198.0"
-               text="READ FROM TEXT FILE"/>
-       <Button layoutX="705.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="198.0"
-               text="ATTACH FILES"/>
+        <Button fx:id="readHtml" layoutX="12.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0"
+                prefWidth="151.0" text="SEND WEBPAGE"/>
+        <Button fx:id="readWordDocument" layoutX="210.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0"
+                prefWidth="198.0" text="READ FROM WORD DOCUMENT"/>
+        <Button fx:id="readtextfile" layoutX="440.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0"
+                prefWidth="198.0" text="READ FROM TEXT FILE"/>
+        <Button fx:id="attachFileToMail" layoutX="705.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0"
+                prefWidth="198.0" text="ATTACH FILES"/>
+        <Button fx:id="sendPlainText" layoutX="756.0" layoutY="394.0" mnemonicParsing="false" prefHeight="61.0"
+                prefWidth="283.0" text="SEND PLAIN TEXT"/>
     </children>
 </AnchorPane>

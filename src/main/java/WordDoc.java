@@ -12,7 +12,7 @@ public class WordDoc {
     static String temp = "";
     static String cellValue;
 
-    public void openFile(File filepassed) throws IOException {
+    public void openFile(File filepassed, File attachment) throws IOException {
 
 
         FileInputStream fis = new FileInputStream(filepassed);
@@ -25,11 +25,18 @@ public class WordDoc {
                 if (counter != 0) {
                     int i = 0;
                     for (XWPFTableCell cell : row.getTableCells()) {
-                        if (i == 1) {
+                        if (i == 1 && !attachment.isFile()) {
                             String sFieldValue = cell.getText();
                             System.out.println(sFieldValue);
                             MailSender mailSender = new MailSender();
-                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), "testing", "text/html");
+                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), "testing", Settings.mailDetails.get("type"), null);
+
+
+                        } else if (i == 1 && attachment.isFile()) {
+                            String sFieldValue = cell.getText();
+                            System.out.println(sFieldValue);
+                            MailSender mailSender = new MailSender();
+                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), "testing", Settings.mailDetails.get("type"), attachment);
 
 
                         }
