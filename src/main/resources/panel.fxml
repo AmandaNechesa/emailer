@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="panel" prefHeight="700.0" prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/11.0.1" fx:controller="PanelController">
+    <children>
+        <Label fx:id="LabelName" alignment="CENTER" layoutX="457.0" layoutY="24.0" prefHeight="61.0" prefWidth="475.0"
+               text="LabelName">
+            <font>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="114.0" layoutY="24.0" prefHeight="61.0" prefWidth="243.0" text="NAME">
+            <font>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="114.0" layoutY="111.0" prefHeight="61.0" prefWidth="243.0" text="EMAIL">
+            <font>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+            </font>
+        </Label>
+        <Label alignment="CENTER" layoutX="114.0" layoutY="208.0" prefHeight="61.0" prefWidth="243.0" text="PROVIDER">
+            <font>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+            </font>
+        </Label>
+        <Label fx:id="LabelEmail" alignment="CENTER" layoutX="457.0" layoutY="111.0" prefHeight="61.0" prefWidth="475.0"
+               text="LabelEmail">
+            <font>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+            </font>
+        </Label>
+        <Label fx:id="LabelProvider" alignment="CENTER" layoutX="457.0" layoutY="208.0" prefHeight="61.0"
+               prefWidth="475.0" text="LabelProvider">
+            <font>
+                <Font name="Bodoni MT Condensed Italic" size="32.0"/>
+            </font>
+        </Label>
+        <Button fx:id="clearSession" layoutX="949.0" layoutY="24.0" mnemonicParsing="false" prefHeight="73.0"
+                prefWidth="237.0" style="-fx-background-color: ORANGE;" text="CLEAR SESSION">
+            <font>
+                <Font size="26.0"/>
+            </font>
+        </Button>
+        <Button fx:id="addEmailFile" layoutX="280.0" layoutY="615.0" mnemonicParsing="false" prefHeight="61.0"
+                prefWidth="306.0" text="ATTACH FILE WITH EMAILS AND NAMES"/>
+        <TextArea layoutX="181.0" layoutY="385.0" prefHeight="100.0" prefWidth="553.0" promptText="MESSAGE.......">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </TextArea>
+        <TextField alignment="CENTER" layoutX="179.0" layoutY="319.0" prefHeight="45.0" prefWidth="553.0"
+                   promptText="SUBJECT">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </TextField>
+    </children>
+</AnchorPane>
