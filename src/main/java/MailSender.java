@@ -1,6 +1,11 @@
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -71,8 +76,41 @@ public class MailSender {
             }
             if (!pathname.isEmpty()) {
                 //send attachment with readings from a file
+                MailSender mailer = new MailSender();
+                StringBuilder msg = null;
+
+                File file = new File(pathname);
+                try {
+                    FileInputStream fileInputStream = new FileInputStream(file);
+                    int i = 0;
+                    while (true) {
+                        try {
+
+                            if ((i = fileInputStream.read()) == -1) break;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.print((char) i);
+                        msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type, attachment);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+
             } else {
-                //send email without attachments
+                //send attachment without file readings
+                MailSender mailer = new MailSender();
+                try {
+                    mailer.send(from, password, to, subject, null, type, attachment);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+
             }
 
         } else {
@@ -99,7 +137,7 @@ public class MailSender {
                 while (true) {
                     try {
 
-                        if (!((i = fileInputStream.read()) != -1)) break;
+                        if ((i = fileInputStream.read()) == -1) break;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -109,12 +147,16 @@ public class MailSender {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type);
+            try {
+                mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type, null);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
 
         }
     }
 
-    private void send(final String from, final String password, String to, String sub, String msg, String type) {
+    private void send(final String from, final String password, String to, String sub, String msg, String type, File attachment) throws MessagingException {
         //get Session
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
@@ -122,22 +164,51 @@ public class MailSender {
                         return new PasswordAuthentication(from, password);
                     }
                 });
+        MimeMessage message = new MimeMessage(session);
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        message.setSubject(sub);
+        message.setText(msg);
+        if (attachment.exists()) {
+            //send with attachment
+            BodyPart messageBodyPart = new MimeBodyPart();
 
-        try {
-            MimeMessage message = new MimeMessage(session);
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject(sub);
-            message.setText(msg);
-            //send message
-            message.setContent(
-                    msg,
-                    type);
+            // Now set the actual message
+            messageBodyPart.setText("This is message body");
 
+            // Create a multipar message
+            Multipart multipart = new MimeMultipart();
+
+            // Set text message part
+            multipart.addBodyPart(messageBodyPart);
+
+            // Part two is attachment
+            messageBodyPart = new MimeBodyPart();
+            String filename = "/home/manisha/file.txt";
+            DataSource source = new FileDataSource(filename);
+            messageBodyPart.setDataHandler(new DataHandler(source));
+            messageBodyPart.setFileName(filename);
+            multipart.addBodyPart(messageBodyPart);
+
+            // Send the complete message parts
+            message.setContent(multipart);
+
+            // Send message
             Transport.send(message);
-            System.out.println("message sent successfully");
-            System.out.println();
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+
+        } else {
+            try {
+
+                //send message
+                message.setContent(
+                        msg,
+                        type);
+
+                Transport.send(message);
+                System.out.println("message sent successfully");
+                System.out.println();
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
