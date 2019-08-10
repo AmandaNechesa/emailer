@@ -9,6 +9,7 @@ import java.util.Properties;
 
 public class MailSender {
     private Properties props = new Properties();
+    String type;
 
     public MailSender(String provider) {
 //for multiple providers
@@ -21,6 +22,7 @@ public class MailSender {
             props.put("mail.smtp.port", "587");
         }
     }
+
     public MailSender() {
 
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -33,6 +35,7 @@ public class MailSender {
     }
 
     public void initializeMail(String to, String password, String from, String subject, String type, File attachment) {
+        String pathname = "";
         if (attachment.exists()) {
 //            MailSender mailer = new MailSender();
 //            StringBuilder msg = null;
@@ -55,11 +58,40 @@ public class MailSender {
 //                e.printStackTrace();
 //            }
 //            mailer.send(from, password, to, subject, msg == null ? null : msg.toString(), type);
+            if (!Settings.mailDetails.get("txt").isEmpty()) {
+                type = Settings.mailDetails.get("type");
+                pathname = Settings.mailDetails.get("txt");
+
+            } else if (!Settings.mailDetails.get("word").isEmpty()) {
+                type = Settings.mailDetails.get("type");
+                pathname = Settings.mailDetails.get("word");
+            } else if (!Settings.mailDetails.get("html").isEmpty()) {
+                type = Settings.mailDetails.get("type");
+                pathname = Settings.mailDetails.get("html");
+            }
+            if (!pathname.isEmpty()) {
+                //send attachment with readings from a file
+            } else {
+                //send email without attachments
+            }
 
         } else {
+            if (!Settings.mailDetails.get("txt").isEmpty()) {
+                type = Settings.mailDetails.get("type");
+                pathname = Settings.mailDetails.get("txt");
+
+            } else if (!Settings.mailDetails.get("word").isEmpty()) {
+                type = Settings.mailDetails.get("type");
+                pathname = Settings.mailDetails.get("word");
+            } else if (!Settings.mailDetails.get("html").isEmpty()) {
+                type = Settings.mailDetails.get("type");
+                pathname = Settings.mailDetails.get("html");
+            }
+
+
             MailSender mailer = new MailSender();
             StringBuilder msg = null;
-            String pathname = "src/URBAN LANDLORDS.htm";
+
             File file = new File(pathname);
             try {
                 FileInputStream fileInputStream = new FileInputStream(file);
@@ -103,6 +135,7 @@ public class MailSender {
 
             Transport.send(message);
             System.out.println("message sent successfully");
+            System.out.println();
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

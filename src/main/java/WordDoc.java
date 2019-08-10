@@ -37,7 +37,7 @@ public class WordDoc {
                             System.out.println(sFieldValue);
                             MailSender mailSender = new MailSender();
                             mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), "testing", Settings.mailDetails.get("type"), attachment);
-
+//attach file to email
 
                         }
                         i++;

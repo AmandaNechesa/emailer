@@ -56,16 +56,7 @@ public class PanelController implements Initializable {
 
         });
         addEmailFile.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-
-            //Set extension filter
-            FileChooser.ExtensionFilter extensionFilterDocs = new FileChooser.ExtensionFilter("WORD files", "*.doc");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDocx = new FileChooser.ExtensionFilter("WORD files", "*.docx");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDocm = new FileChooser.ExtensionFilter("WORD files", "*.docm");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDotm = new FileChooser.ExtensionFilter("WORD files", "*.dotm");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDotx = new FileChooser.ExtensionFilter("WORD files", "*.dotx");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDot = new FileChooser.ExtensionFilter("WORD files", "*.dot");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            fileChooser.getExtensionFilters().addAll(extensionFilterDocs, extensionFilterDocm, extensionFilterDocx, extensionFilterDot, extensionFilterDotm, extensionFilterDotx);
+            FileChooser fileChooser = getWordFiles();
             fileChooser.setTitle("SELECT WORD DOCUMENT WITH TABLE FOR USER NAME AND EMAIL ADDRESSES");
             //Show open file dialog
             file = fileChooser.showOpenDialog(panel.getScene().getWindow());
@@ -81,9 +72,8 @@ public class PanelController implements Initializable {
         readHtml.setOnAction(event -> {
             //open html
             FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter htmlFiles = new FileChooser.ExtensionFilter("HTML files", "*.html");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter htmfiles = new FileChooser.ExtensionFilter("HTML files", "*.htm");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            fileChooser.getExtensionFilters().addAll(htmlFiles, htmfiles);
+            FileChooser.ExtensionFilter htmlFiles = new FileChooser.ExtensionFilter("HTML files", "*.html", "*.htm");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
+            fileChooser.getExtensionFilters().addAll(htmlFiles);
             fileChooser.setTitle("SELECT HTML FILE");
             //Show open file dialog
             File chosenHtml = fileChooser.showOpenDialog(panel.getScene().getWindow());
@@ -91,6 +81,7 @@ public class PanelController implements Initializable {
             WordDoc wordDoc = new WordDoc();
             try {
                 Settings.mailDetails.put("html", path);
+                Settings.mailDetails.put("type", "text/html");
                 wordDoc.openFile(file, null);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -106,7 +97,7 @@ public class PanelController implements Initializable {
             File chosenTxt = fileChooser.showOpenDialog(panel.getScene().getWindow());
             path = chosenTxt.getAbsolutePath();
             Settings.mailDetails.put("txt", path);
-
+            Settings.mailDetails.put("type", "text/plain");
             WordDoc wordDoc = new WordDoc();
             try {
                 wordDoc.openFile(file, null);
@@ -116,20 +107,13 @@ public class PanelController implements Initializable {
         });
         readWordDocument.setOnAction(event -> {
             //read word document
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extensionFilterDocs = new FileChooser.ExtensionFilter("WORD files", "*.doc");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDocx = new FileChooser.ExtensionFilter("WORD files", "*.docx");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDocm = new FileChooser.ExtensionFilter("WORD files", "*.docm");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDotm = new FileChooser.ExtensionFilter("WORD files", "*.dotm");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDotx = new FileChooser.ExtensionFilter("WORD files", "*.dotx");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            FileChooser.ExtensionFilter extensionFilterDot = new FileChooser.ExtensionFilter("WORD files", "*.dot");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
-            fileChooser.getExtensionFilters().addAll(extensionFilterDocs, extensionFilterDocm, extensionFilterDocx, extensionFilterDot, extensionFilterDotm, extensionFilterDotx);
+            FileChooser fileChooser = getWordFiles();
             fileChooser.setTitle("SELECT WORD DOCUMENT ");
             //Show open file dialog
             File chosenWord = fileChooser.showOpenDialog(panel.getScene().getWindow());
             path = chosenWord.getAbsolutePath();
             Settings.mailDetails.put("word", path);
-
+            Settings.mailDetails.put("type", "text");
             WordDoc wordDoc = new WordDoc();
             try {
                 wordDoc.openFile(file, null);
@@ -139,7 +123,15 @@ public class PanelController implements Initializable {
         });
         attachFileToMail.setOnAction(event -> {
             //attach file
-            File f = null;
+            File f;
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extensionFilterDocs = new FileChooser.ExtensionFilter("Document files", "*.pdf", "*.txt", "*.doc", "*.docx", "*.docm", "*.dotm", "*.dotx", "*.dot");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
+            FileChooser.ExtensionFilter extensionFiltermp3 = new FileChooser.ExtensionFilter("Mp3 files", "*.mp3");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
+            FileChooser.ExtensionFilter extensionFilterSQL = new FileChooser.ExtensionFilter("SQL files", "*.sql", "*.sqlite");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
+            fileChooser.getExtensionFilters().addAll(extensionFilterDocs, extensionFiltermp3, extensionFilterSQL);
+            fileChooser.setTitle("ATTACH FILE TO EMAIL");
+            f = fileChooser.showOpenDialog(panel.getScene().getWindow());
+
             WordDoc wordDoc = new WordDoc();
             try {
                 wordDoc.openFile(file, f);
@@ -147,5 +139,12 @@ public class PanelController implements Initializable {
                 e.printStackTrace();
             }
         });
+    }
+
+    private FileChooser getWordFiles() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extensionFilterDocs = new FileChooser.ExtensionFilter("WORD files", "*.doc", "*.docx", "*.docm", "*.dotm", "*.dotx", "*.dot");//, ".docx", ".docm", ".dot", ".dotm", ".dotx");
+        fileChooser.getExtensionFilters().addAll(extensionFilterDocs);
+        return fileChooser;
     }
 }
