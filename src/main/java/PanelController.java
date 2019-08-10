@@ -26,7 +26,7 @@ public class PanelController implements Initializable {
     public Label LabelProvider;
     public Label LabelName;
     public Button readHtml;
-    public Button readWordDocument;
+    //    public Button readWordDocument;
     public Button attachFileToMail;
     public Button sendPlainText;
     public FileInputStream fileInputStream;
@@ -47,7 +47,9 @@ public class PanelController implements Initializable {
     private void buttonListeners() {
         //completed functionality
         WordDoc wordDoc = new WordDoc();
+        sendPlainText.setOnAction(event -> {
 
+        });
         clearSession.setOnAction(event -> {
             Settings.userDetails.clear();
             Settings.mailDetails.clear();
@@ -107,19 +109,6 @@ public class PanelController implements Initializable {
             path = chosenTxt.getAbsolutePath();
             Settings.mailDetails.put("txt", path);
             Settings.mailDetails.put("type", "text/plain");
-            wordDoc.setPassed(new File(path));
-
-//                wordDoc.openFile();
-        });
-        readWordDocument.setOnAction(event -> {
-            //read word document
-            FileChooser fileChooser = getWordFiles();
-            fileChooser.setTitle("SELECT WORD DOCUMENT ");
-            //Show open file dialog
-            File chosenWord = fileChooser.showOpenDialog(panel.getScene().getWindow());
-            path = chosenWord.getAbsolutePath();
-            Settings.mailDetails.put("word", path);
-            Settings.mailDetails.put("type", "text");
             wordDoc.setPassed(new File(path));
 
 //                wordDoc.openFile();
