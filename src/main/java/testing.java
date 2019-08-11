@@ -1,18 +1,22 @@
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-
-import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class testing {
     public static void main(String[] args) {
-        try {
-            FileInputStream fis = new FileInputStream("src/NAME.docx");
-            XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
-            XWPFWordExtractor extractor = new XWPFWordExtractor(xdoc);
-            System.out.println(extractor.getText());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        System.out.println(getAllMatches("abaca", "a.a"));
+        System.out.println(getAllMatches("abaa", "a.*a"));
+
     }
+
+    public static List<String> getAllMatches(String text, String regex) {
+        List<String> matches = new ArrayList<String>();
+        Matcher m = Pattern.compile("(?=(" + regex + "))").matcher(text);
+        while (m.find()) {
+            matches.add(m.group(1));
+        }
+        return matches;
+    }
+
 }

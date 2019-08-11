@@ -67,7 +67,7 @@
                 prefWidth="198.0" text="READ FROM TEXT FILE"/>
         <Button fx:id="attachFileToMail" layoutX="705.0" layoutY="496.0" mnemonicParsing="false" prefHeight="45.0"
                 prefWidth="198.0" text="ATTACH FILES"/>
-        <Button fx:id="sendPlainText" layoutX="756.0" layoutY="394.0" mnemonicParsing="false" prefHeight="61.0"
-                prefWidth="283.0" text="SEND PLAIN TEXT"/>
+        <!--        <Button fx:id="sendPlainText" layoutX="756.0" layoutY="394.0" mnemonicParsing="false" prefHeight="61.0"-->
+        <!--                prefWidth="283.0" text="SEND PLAIN TEXT"/>-->
     </children>
 </AnchorPane>

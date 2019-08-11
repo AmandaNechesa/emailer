@@ -1,3 +1,4 @@
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class WordDoc extends Super {
     static String temp = "";
@@ -56,6 +58,56 @@ public class WordDoc extends Super {
         List<XWPFTable> tables = doc.getTables();
         if (tables.isEmpty()) {
             System.out.println("no tables present");
+            try {
+                XWPFWordExtractor extractor = new XWPFWordExtractor(doc);
+                System.out.println(extractor.getText());
+
+                String[] lines = extractor.getText().split("\r\n|\r|\n");
+                Pattern pattern = Pattern.compile(Settings.mailRegex);
+
+                for (String email : lines) {
+//                    Matcher matcher = pattern.matcher(email);
+//                    System.out.println(email +" : "+ matcher.matches());
+                    try {
+                        if (!getContacts().isFile()) {
+                            String sFieldValue = email;
+                            System.out.println(sFieldValue);
+                            MailSender mailSender = new MailSender();
+                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), null);
+
+
+                        } else if (getContacts().exists()) {
+                            String sFieldValue = email;
+                            System.out.println(sFieldValue);
+                            MailSender mailSender = new MailSender();
+                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), getAttachment());
+//attach file to email
+
+                        } else if (!getContacts().isFile() && !Settings.message.isEmpty()) {
+                            String sFieldValue = email;
+                            System.out.println(sFieldValue);
+                            MailSender mailSender = new MailSender();
+                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), null, null);
+
+
+                        } else if (getContacts().exists() && !Settings.message.isEmpty()) {
+                            String sFieldValue = email;
+                            System.out.println(sFieldValue);
+                            MailSender mailSender = new MailSender();
+                            mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), null, getAttachment());
+//attach file to email
+
+                        }
+                    } catch (NullPointerException ignored) {
+                        ignored.printStackTrace();
+                    }
+
+                }
+
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
         } else {
             for (XWPFTable table : tables) {
@@ -69,14 +121,28 @@ public class WordDoc extends Super {
                                 String sFieldValue = cell.getText();
                                 System.out.println(sFieldValue);
                                 MailSender mailSender = new MailSender();
-                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), null, getPassed());
+                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), null);
 
 
                             } else if (i == 1 && getContacts().exists()) {
                                 String sFieldValue = cell.getText();
                                 System.out.println(sFieldValue);
                                 MailSender mailSender = new MailSender();
-                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), getAttachment(), getPassed());
+                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), Settings.mailDetails.get("type"), getAttachment());
+//attach file to email
+
+                            } else if (!getContacts().isFile() && !Settings.message.isEmpty()) {
+                                String sFieldValue = cell.getText();
+                                System.out.println(sFieldValue);
+                                MailSender mailSender = new MailSender();
+                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), null, null);
+
+
+                            } else if (getContacts().exists() && !Settings.message.isEmpty()) {
+                                String sFieldValue = cell.getText();
+                                System.out.println(sFieldValue);
+                                MailSender mailSender = new MailSender();
+                                mailSender.initializeMail(sFieldValue, Settings.userDetails.get("password"), Settings.userDetails.get("email"), Settings.mailDetails.get("subject"), null, getAttachment());
 //attach file to email
 
                             }
@@ -87,7 +153,9 @@ public class WordDoc extends Super {
                     }
                     counter++;
 //                System.out.println(" ");
+
                 }
+
             }
         }
     }

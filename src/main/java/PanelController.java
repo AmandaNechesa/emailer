@@ -28,12 +28,12 @@ public class PanelController implements Initializable {
     public Button readHtml;
     //    public Button readWordDocument;
     public Button attachFileToMail;
-    public Button sendPlainText;
+    //    public Button sendPlainText;
     public FileInputStream fileInputStream;
     public TextField subject;
     public TextArea message;
     String path = "";
-    private File file, fileread;
+    private File file;
     private int length;
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -47,9 +47,9 @@ public class PanelController implements Initializable {
     private void buttonListeners() {
         //completed functionality
         WordDoc wordDoc = new WordDoc();
-        sendPlainText.setOnAction(event -> {
-
-        });
+//        sendPlainText.setOnAction(event -> {
+//
+//        });
         clearSession.setOnAction(event -> {
             Settings.userDetails.clear();
             Settings.mailDetails.clear();
@@ -60,7 +60,7 @@ public class PanelController implements Initializable {
             }
 
         });
-//        *************************************************************************************************************************//
+//        *****************************************************************************************************************************************************************************************************************************************************************************************************************************//
 
         addEmailFile.setOnAction(event -> {
             Settings.mailDetails.put("subject", subject.getText());
@@ -77,6 +77,10 @@ public class PanelController implements Initializable {
                 e.printStackTrace();
             }
             try {
+                if (!message.getText().isEmpty()) {
+                    //set a message
+                    Settings.message.put("mailmessage", message.getText());
+                }
                 wordDoc.setContacts(file);
                 wordDoc.openFile();
             } catch (IOException e) {

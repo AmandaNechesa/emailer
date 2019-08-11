@@ -11,7 +11,6 @@ import java.util.Properties;
 
 public class MailSender {
     private Properties props = new Properties();
-    String type;
 
     public MailSender(String provider) {
 //for multiple providers
@@ -22,11 +21,25 @@ public class MailSender {
                     "javax.net.ssl.SSLSocketFactory");
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.port", "587");
+        } else if (Settings.userDetails.get("provider").equalsIgnoreCase("hotmail")) {
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class",
+                    "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "587");
+        } else if (Settings.userDetails.get("provider").equalsIgnoreCase("webmail")) {
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class",
+                    "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "587");
         }
     }
 
     public MailSender() {
-
+//default constructor
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class",
@@ -36,7 +49,7 @@ public class MailSender {
 
     }
 
-    public void initializeMail(String to, String password, String from, String subject, String type, File attachment, File passed) {
+    public void initializeMail(String to, String password, String from, String subject, String type, File attachment) {
 
         String pathname = null;
         if (attachment != null) {
@@ -71,7 +84,7 @@ public class MailSender {
                             e.printStackTrace();
                         }
 //                        System.out.print((char) i);
-                        msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
+                        msg = (msg == null ? new StringBuilder() : msg).append((char) i);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -82,8 +95,16 @@ public class MailSender {
                     e.printStackTrace();
                 }
 
+            } else if (!Settings.message.isEmpty()) {
+                //send message and attachment
+                MailSender mailer = new MailSender();
+                try {
+                    mailer.send(from, password, to, subject, Settings.message.get("mailmessage"), type, attachment);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
             } else {
-                //send attachment without file readings
+                //send attachment alone
                 MailSender mailer = new MailSender();
                 try {
                     mailer.send(from, password, to, subject, null, type, attachment);
@@ -123,7 +144,7 @@ public class MailSender {
                         e.printStackTrace();
                     }
 //                    System.out.print((char) i);
-                    msg = (msg == null ? new StringBuilder("") : msg).append((char) i);
+                    msg = (msg == null ? new StringBuilder() : msg).append((char) i);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -190,6 +211,7 @@ public class MailSender {
                 System.out.println("message sent successfully");
                 System.out.println();
             } catch (MessagingException e) {
+                System.out.println("SocketException Network not reachable");
                 throw new RuntimeException(e);
             }
         }
