@@ -12,7 +12,7 @@ import java.util.Properties;
 public class MailSender {
     private Properties props = new Properties();
 
-    public MailSender(String provider) {
+    public MailSender() {
 //for multiple providers
         if (Settings.userDetails.get("provider").equalsIgnoreCase("gmail")) {
             props.put("mail.smtp.host", "smtp.gmail.com");
@@ -29,7 +29,7 @@ public class MailSender {
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.port", "587");
         } else if (Settings.userDetails.get("provider").equalsIgnoreCase("webmail")) {
-            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.host", "mail.nanotechsoftwares.co.ke");
             props.put("mail.smtp.socketFactory.port", "465");
             props.put("mail.smtp.socketFactory.class",
                     "javax.net.ssl.SSLSocketFactory");
@@ -38,16 +38,16 @@ public class MailSender {
         }
     }
 
-    public MailSender() {
-//default constructor
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "587");
-
-    }
+//    public MailSender() {
+////default constructor
+//        props.put("mail.smtp.host", "smtp.gmail.com");
+//        props.put("mail.smtp.socketFactory.port", "465");
+//        props.put("mail.smtp.socketFactory.class",
+//                "javax.net.ssl.SSLSocketFactory");
+//        props.put("mail.smtp.auth", "true");
+//        props.put("mail.smtp.port", "587");
+//
+//    }
 
     public void initializeMail(String to, String password, String from, String subject, String type, File attachment) {
 
@@ -56,18 +56,18 @@ public class MailSender {
 
 
             System.out.println("there is a file attachment");
-            if (!Settings.mailDetails.get("txt").isEmpty()) {
+            if (Settings.mailDetails.containsKey("txt")) {
                 type = Settings.mailDetails.get("type");
                 pathname = Settings.mailDetails.get("txt");
 
-            } else if (!Settings.mailDetails.get("word").isEmpty()) {
+            } else if (Settings.mailDetails.containsKey("word")) {
                 type = Settings.mailDetails.get("type");
                 pathname = Settings.mailDetails.get("word");
-            } else if (!Settings.mailDetails.get("html").isEmpty()) {
+            } else if (Settings.mailDetails.containsKey("html")) {
                 type = Settings.mailDetails.get("type");
                 pathname = Settings.mailDetails.get("html");
             }
-            if (!pathname.isEmpty()) {
+            if (pathname != null) {
                 //send attachment with readings from a file
                 MailSender mailer = new MailSender();
                 StringBuilder msg = null;
@@ -160,6 +160,9 @@ public class MailSender {
 
     private void send(final String from, final String password, String to, String sub, String msg, String type, File attachment) throws MessagingException {
         //get Session
+        if (msg == null) {
+            msg = "";
+        }
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {

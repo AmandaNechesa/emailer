@@ -14,7 +14,7 @@
             </font>
         </Label>
         <TextField fx:id="userName" alignment="CENTER" layoutX="281.0" layoutY="121.0" prefHeight="61.0"
-                   prefWidth="472.0" promptText="NAME" text="steve muema">
+                   prefWidth="472.0" promptText="NAME">
             <font>
                 <Font name="Bodoni MT Condensed Italic" size="29.0"/>
             </font>
@@ -22,19 +22,19 @@
         <Button fx:id="createSession" layoutX="425.0" layoutY="584.0" mnemonicParsing="false" prefHeight="61.0"
                 prefWidth="184.0" text="CREATE SESSION"/>
         <TextField fx:id="userEmail" alignment="CENTER" layoutX="281.0" layoutY="208.0" prefHeight="61.0"
-                   prefWidth="472.0" promptText="EMAIL" text="muemasnyamai@gmail.com">
+                   prefWidth="472.0" promptText="EMAIL">
             <font>
                 <Font name="Bodoni MT Condensed Italic" size="29.0"/>
             </font>
         </TextField>
         <TextField fx:id="passwordField" alignment="CENTER" layoutX="281.0" layoutY="295.0" prefHeight="61.0"
-                   prefWidth="472.0" promptText="PASSWORD" text="Kapsabet010">
+                   prefWidth="472.0" promptText="PASSWORD">
             <font>
                 <Font name="Bodoni MT Condensed Italic" size="29.0"/>
             </font>
         </TextField>
         <TextField fx:id="mailProvider" alignment="CENTER" layoutX="281.0" layoutY="386.0" prefHeight="61.0"
-                   prefWidth="472.0" promptText="PROVIDER eg gmail,hotmail" text="gmail">
+                   prefWidth="472.0" promptText="PROVIDER eg gmail,hotmail">
             <font>
                 <Font name="Bodoni MT Condensed Italic" size="29.0"/>
             </font>
