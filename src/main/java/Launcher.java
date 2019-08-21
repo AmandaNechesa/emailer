@@ -21,10 +21,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Launcher extends Application {
 
@@ -79,16 +75,7 @@ public class Launcher extends Application {
                     String nextTask = tasksToDo.get(i);
                     observableArrayList.add(nextTask);
                     updateMessage("Running task . . . " + nextTask);
-                    if (i == 3) {
-//                     create sqlite tables and db
-                        createLocalDb();
-                    } else if (i == 0) {
-                        try {
-                            getConnection();
-                        } catch (SQLException e) {
-                            System.out.println("COULD NOT CONNECT TO LOCAL DB");
-                        }
-                    }
+
                 }
                 Thread.sleep(4);
                 updateMessage("All TASKS COMPLETED.");
@@ -96,37 +83,8 @@ public class Launcher extends Application {
                 return observableArrayList;
             }
 
-            private void createLocalDb() {
-                Connection connection = null;
-                try {
-//            create SESSION DB
-                    connection = getConnection();
-                    Statement statement = connection.createStatement();
-                    statement.setQueryTimeout(30); // set timeout to 30 sec.
-                    String sessions = "CREATE TABLE IF NOT EXISTS SessionPatients (" + "id INTEGER primary key autoincrement ,name TEXT ,email TEXT,sessionId  TEXT)";
-                    statement.executeUpdate(sessions);
 
-                    String sessionsLab = "CREATE TABLE IF NOT EXISTS SessionLabs (" + "id INTEGER primary key autoincrement ,name TEXT ,email TEXT,sessionId  TEXT,testText TEXT)";
-                    statement.executeUpdate(sessionsLab);
-                } catch (SQLException e) {
-                    // if the error message is "out of memory",
-                    // it probably means no securityandtime file is found
-                    System.err.println(e.getMessage());
-                } finally {
-                    try {
-                        if (connection != null)
-                            connection.close();
-                    } catch (SQLException e) {
-                        // connection close failed.
-                        e.printStackTrace();
-                    }
-                }
-            }
 
-            private Connection getConnection() throws SQLException {
-                return DriverManager.getConnection(Settings.localDb);
-
-            }
         };
 
         showSplash(
