@@ -53,6 +53,7 @@ public class PanelController implements Initializable {
         clearSession.setOnAction(event -> {
             Settings.userDetails.clear();
             Settings.mailDetails.clear();
+            Settings.props.clear();
             try {
                 panel.getChildren().setAll(Collections.singleton(FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("home.fxml")))));
             } catch (IOException e) {

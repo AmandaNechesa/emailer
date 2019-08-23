@@ -7,34 +7,38 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 
 public class MailSender {
-    private Properties props = new Properties();
 
     public MailSender() {
 //for multiple providers
         if (Settings.userDetails.get("provider").equalsIgnoreCase("gmail")) {
-            props.put("mail.smtp.host", "smtp.gmail.com");
-            props.put("mail.smtp.socketFactory.port", "465");
-            props.put("mail.smtp.socketFactory.class",
+            Settings.props.put("mail.smtp.host", "smtp.gmail.com");
+            Settings.props.put("mail.smtp.socketFactory.port", "465");
+            Settings.props.put("mail.smtp.socketFactory.class",
                     "javax.net.ssl.SSLSocketFactory");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.port", "587");
-        } else if (Settings.userDetails.get("provider").equalsIgnoreCase("hotmail")) {
-            props.put("mail.smtp.host", "smtp.gmail.com");
-            props.put("mail.smtp.socketFactory.port", "465");
-            props.put("mail.smtp.socketFactory.class",
+            Settings.props.put("mail.smtp.auth", "true");
+            Settings.props.put("mail.smtp.port", "587");
+        } else if (Settings.userDetails.get("provider").equalsIgnoreCase("outlook")) {
+            Settings.props.put("mail.smtp.starttls.enable", "true");
+            Settings.props.put("mail.smtp.host", "outlook.office365.com");
+            Settings.props.put("mail.smtp.socketFactory.port", "465");
+            Settings.props.put("mail.smtp.socketFactory.class",
                     "javax.net.ssl.SSLSocketFactory");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.port", "587");
+//            tpgkhylqyxiypqld
+            Settings.props.put("mail.smtp.auth", "true");
+            Settings.props.put("mail.smtp.port", "587");
         } else if (Settings.userDetails.get("provider").equalsIgnoreCase("webmail")) {
-            props.put("mail.smtp.host", "mail.nanotechsoftwares.co.ke");
-            props.put("mail.smtp.socketFactory.port", "465");
-            props.put("mail.smtp.socketFactory.class",
+            Settings.props.put("mail.smtp.host", "mail.nanotechsoftwares.co.ke");
+            Settings.props.put("mail.smtp.socketFactory.port", "587");
+            Settings.props.put("mail.smtp.socketFactory.class",
                     "javax.net.ssl.SSLSocketFactory");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.port", "587");
+            Settings.props.put("mail.smtp.ssl.enable", "true");
+            Settings.props.put("mail.smtp.auth", "true");
+            Settings.props.put("mail.smtp.port", "465");
         }
     }
 
@@ -50,7 +54,11 @@ public class MailSender {
 //    }
 
     public void initializeMail(String to, String password, String from, String subject, String type, File attachment) {
-
+        try {
+            System.out.println(Arrays.toString(InetAddress.getAllByName(to)));
+        } catch (UnknownHostException e) {
+            System.out.println("unknown host");
+        }
         String pathname = null;
         if (attachment != null) {
 
@@ -163,7 +171,7 @@ public class MailSender {
         if (msg == null) {
             msg = "";
         }
-        Session session = Session.getDefaultInstance(props,
+        Session session = Session.getDefaultInstance(Settings.props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(from, password);

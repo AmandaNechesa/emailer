@@ -104,7 +104,7 @@ public class Launcher extends Application {
     private void showMainStage(
     ) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("home.fxml"));
-        FadeTransition ft = new FadeTransition(Duration.millis(2500), root);
+        FadeTransition ft = new FadeTransition(Duration.millis(25), root);
         ft.setFromValue(0.3);
         ft.setToValue(1.0);
         ft.play();
@@ -133,7 +133,7 @@ public class Launcher extends Application {
                 loadProgress.progressProperty().unbind();
                 loadProgress.setProgress(1);
                 initStage.toFront();
-                FadeTransition fadeSplash = new FadeTransition(Duration.seconds(1.2), splashLayout);
+                FadeTransition fadeSplash = new FadeTransition(Duration.seconds(1.0), splashLayout);
                 fadeSplash.setFromValue(1.0);
                 fadeSplash.setToValue(0.0);
                 fadeSplash.setOnFinished(actionEvent -> initStage.hide());

@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public interface Settings {
     String APPLICATION_ICON = "logo.png";
@@ -11,5 +12,6 @@ public interface Settings {
     HashMap<String, String> fileReaders = new HashMap<>();
     String mailRegex = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$";
     Map<String, String> message = new HashMap<>();
+    Properties props = new Properties();
 
 }
